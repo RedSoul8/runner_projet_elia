@@ -5,7 +5,7 @@ public class Hero extends AnimatedThing {
         super(posx, posy, index, y, w, h, filename, attitude);
     }
 
-    public void update(long time) {
+    public void update(long now) {
         if (this.attitude == "running") {
             if (this.index < max_index) {
                 this.index = this.index + 85;

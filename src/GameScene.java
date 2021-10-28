@@ -30,11 +30,15 @@ public class GameScene extends Scene {
     private staticThing heart;
 
     AnimationTimer timer = new AnimationTimer() {
+        private long lastUpdate=0;
         @Override
-        public void handle(long time) {
-            hero.update(time);
-            //theScene.GetCam().update(time);
-            //update(time);
+        public void handle(long now) {
+            if(now - lastUpdate >= 90000000){
+                hero.update(now);
+                GetCam().update(now);
+                update(now);
+                lastUpdate=now;
+            }
         }
     };
 
@@ -58,7 +62,7 @@ public class GameScene extends Scene {
         pane.getChildren().add(heart.getSprite());
     }
 
-    public void update(long time, Pane pane) {
+    public void update(long time) {
 
     }
 }
