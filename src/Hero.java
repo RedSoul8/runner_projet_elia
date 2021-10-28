@@ -13,7 +13,6 @@ public class Hero extends AnimatedThing {
             else{
                 this.index=0;
             }
-
             sprite.setViewport(new Rectangle2D(index, 0, 85, 100));
         }
     }

@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 public class staticThing {
     private double x;
     private double y;
-    private ImageView sprite;
+    protected ImageView sprite;
 
     public staticThing (double posx, double posy, double x, double y, double w, double h, String filename) {
         Image spriteSheet = new Image(filename);

@@ -23,5 +23,6 @@ public class Camera{
     }
 
     public void update(long time) {
+
     }
 }
