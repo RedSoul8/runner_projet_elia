@@ -1,8 +1,8 @@
 import javafx.geometry.Rectangle2D;
 
 public class Hero extends AnimatedThing {
-    public Hero(double posx, double posy, double index, double y, double w, double h, String filename, String attitude) {
-        super(posx, posy, index, y, w, h, filename, attitude);
+    public Hero(double xhero, double posy, double index, double y, double w, double h, String filename, String attitude) {
+        super(xhero, posy, index, y, w, h, filename, attitude);
     }
 
     public void update(long now) {
