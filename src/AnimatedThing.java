@@ -29,7 +29,7 @@ public class AnimatedThing {
 
     public void setXhero(double xhero) { this.xhero = xhero; }
 
-    protected double xhero;
+    protected double xhero=200;
     protected long time; // between 2 frames
     private double size;
     private double offset; // between 2 frames

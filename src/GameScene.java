@@ -16,7 +16,7 @@ public class GameScene extends Scene {
     private double var2=0;
 
     public Camera GetCam(){
-        return camera;
+        return this.camera;
     }
     public GameScene(Pane pane, double v, double v1,boolean b) {
         super(pane, v, v1, b);
@@ -38,7 +38,7 @@ public class GameScene extends Scene {
         public void handle(long now) {
             if(now - lastUpdate >= 90000000){
                 hero.update(now);
-                //GetCam().update(now);
+               // GetCam().update(now, hero.xhero);
                 update(now);
                 lastUpdate=now;
             }
@@ -46,14 +46,17 @@ public class GameScene extends Scene {
     };
 
     public void background() {
-        left = new staticThing(0, 0, 500+var1, 0, 300-var1, 400, "C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\desert.png");
-        right = new staticThing(300-var1, 0, 0, 0, 300+var1, 400, "C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\desert.png");
+       // left = new staticThing(0, 0, 500+var1, 0, 300-var1, 400, "C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\desert.png");
+       // right = new staticThing(300-var1, 0, 0, 0, 300+var1, 400, "C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\desert.png");
+        left = new staticThing(0, 0, 500+var1, 0, 300-var1, 400, "C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\halloween_forest.PNG");
+        right = new staticThing(300-var1, 0, 0, 0, 300+var1, 400, "C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\halloween_forest.PNG");
         // augmenter w de right et x de left ET diminuer posx de right
         // augmenter x de right (avec var2) ET mettre posx de left à 600 et x de left à [ ] (avec var)
     }
 
     public void hero(){
-        hero = new Hero(200,255, 0, 0,85,100,"C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\heros.png","running");
+        //hero = new Hero(200, 250, 0, 0,85,100,"C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\heros.png","running");
+        hero = new Hero(200, 250, 0, 0,85,100,"C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\heros2.png","running");
     }
     public void health(){
         heart = new staticThing(2, 5,0,0,87,27,"C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\heart.png");
@@ -69,9 +72,12 @@ public class GameScene extends Scene {
 
     public void update(long now) {
         var1+=25;
-        var1=var1%800;
-        left.getSprite().setViewport(new Rectangle2D(var1, 0, 800-var1, 400));
+        //var1=var1%800;
+        var1=var1%1429;
+        //left.getSprite().setViewport(new Rectangle2D(var1, 0, 800-var1, 400));
+        left.getSprite().setViewport(new Rectangle2D(var1, 0, 1429-var1, 400));
         right.getSprite().setViewport(new Rectangle2D(0, 0, var1, 400));
-        right.getSprite().setX(800 - var1);
+        //right.getSprite().setX(800 - var1);
+        right.getSprite().setX(1429 - var1);
     }
 }
