@@ -15,6 +15,7 @@ public class GameScene extends Scene {
     private double var=0;
     private double var1=0;
     private double var2=0;
+    private double v_0=200;
 
     public Camera GetCam(){
         return this.camera;
@@ -32,6 +33,10 @@ public class GameScene extends Scene {
                 System.out.println("ok");
                 hero.xhero+=5;
             }
+            if (event.getCode().equals(KeyCode.SPACE)) {
+                System.out.println("yes");
+                hero.attitude="jumping up";
+            }
         });
     }
 
@@ -46,8 +51,8 @@ public class GameScene extends Scene {
         public void handle(long now) {
             double time=(now-lastUpdate)*Math.pow(10,-9);
             if(time > 0.08){
-                System.out.println("time avant "+time);
-                hero.update(time,camera.getX());
+                //System.out.println("time avant "+time);
+                hero.update(time,camera.getX(),v_0);
                 GetCam().update(time, hero.xhero);
                 update(time);
                 lastUpdate=now;

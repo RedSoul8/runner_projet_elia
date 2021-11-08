@@ -2,7 +2,7 @@ public class Camera{
 
     private double x;
     private double y;
-    private double ax;
+    protected double ax;
     private double k_m=4;
     private double f_m=3;
     private double vx=0;
@@ -45,10 +45,10 @@ public class Camera{
 
     public void update(double time, double xhero)  {
         if(time<1){
-            System.out.println("ax "+ ax);
-            System.out.println("vx "+ vx);
-            System.out.println("x "+ x);
-            System.out.println("time "+time);
+            //System.out.println("ax "+ ax);
+            //System.out.println("vx "+ vx);
+            //System.out.println("x "+ x);
+            //System.out.println("time "+time);
             ax=k_m*(xhero-x)-f_m*vx;
             vx+=ax*time;
             x+=vx*time;
