@@ -4,10 +4,6 @@ import javafx.scene.image.ImageView;
 
 public class AnimatedThing {
     protected double x;
-    //public double getX() {
-    //    return x;
-    //}
-
     protected double y;
     protected double w;
     protected double h;
@@ -27,10 +23,12 @@ public class AnimatedThing {
 
     public double getXhero() { return xhero; }
 
-    public void setXhero(double xhero) { this.xhero = xhero; }
+    public void setXhero(double xhero) {
+        this.xhero = xhero;
+    }
 
     protected double xhero=200;
-    protected long time; // between 2 frames
+    private long time; // between 2 frames
     private double size;
     private double offset; // between 2 frames
 

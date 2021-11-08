@@ -21,19 +21,6 @@ public class Main extends Application {
              GameScene theScene = new GameScene(pane, 600, 400,true);
              primaryStage.setScene(theScene);
              primaryStage.show();
-//             AnimationTimer timer = new AnimationTimer() {
-//                 private long lastUpdate=0;
-//                 @Override
-//                 public void handle(long now) {
-//                     if(now - lastUpdate >= 90000000){
-//                         theScene.hero.update(now);
-//                         theScene.GetCam().update(now);
-//                         theScene.update(now);
-//                         lastUpdate=now;
-//                     }
-//                 }
-//             };
-
          }
          public static void main(String[] args) {
          launch(args);

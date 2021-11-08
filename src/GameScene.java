@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 
 public class GameScene extends Scene {
@@ -12,7 +13,7 @@ public class GameScene extends Scene {
     private Camera camera;
     private double index;
     private double var=0;
-    private double var1=100;
+    private double var1=0;
     private double var2=0;
 
     public Camera GetCam(){
@@ -25,6 +26,13 @@ public class GameScene extends Scene {
         this.health();
         timer.start();
         this.display(pane);
+        camera = new Camera(0, 0);
+        this.setOnKeyPressed((event) -> {
+            if (event.getCode().equals(KeyCode.D)) {
+                System.out.println("ok");
+                hero.xhero+=5;
+            }
+        });
     }
 
     private staticThing left;
@@ -36,10 +44,12 @@ public class GameScene extends Scene {
         private long lastUpdate=0;
         @Override
         public void handle(long now) {
-            if(now - lastUpdate >= 90000000){
-                hero.update(now);
-               // GetCam().update(now, hero.xhero);
-                update(now);
+            double time=(now-lastUpdate)*Math.pow(10,-9);
+            if(time > 0.08){
+                System.out.println("time avant "+time);
+                hero.update(time,camera.getX());
+                GetCam().update(time, hero.xhero);
+                update(time);
                 lastUpdate=now;
             }
         }
@@ -56,7 +66,7 @@ public class GameScene extends Scene {
 
     public void hero(){
         //hero = new Hero(200, 250, 0, 0,85,100,"C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\heros.png","running");
-        hero = new Hero(200, 250, 0, 0,85,100,"C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\heros2.png","running");
+        hero = new Hero(200, 270, 0, 0,85,100,"C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\heros2.png","running");
     }
     public void health(){
         heart = new staticThing(2, 5,0,0,87,27,"C:\\Users\\Elia\\Documents\\ENSEA\\cours_ENSEA_2A\\INFORMATIQUE\\java\\runner\\heart.png");
@@ -70,14 +80,16 @@ public class GameScene extends Scene {
         pane.getChildren().add(heart.getSprite());
     }
 
-    public void update(long now) {
-        var1+=25;
-        //var1=var1%800;
-        var1=var1%1429;
-        //left.getSprite().setViewport(new Rectangle2D(var1, 0, 800-var1, 400));
-        left.getSprite().setViewport(new Rectangle2D(var1, 0, 1429-var1, 400));
-        right.getSprite().setViewport(new Rectangle2D(0, 0, var1, 400));
-        //right.getSprite().setX(800 - var1);
-        right.getSprite().setX(1429 - var1);
+    public void update(double time) {
+            //var1+=25;
+            //var1=var1%800;
+            var1=(var1 + camera.getV()*time)%1429;
+            //System.out.println("time background "+time);
+            //left.getSprite().setViewport(new Rectangle2D(var1, 0, 800-var1, 400));
+            left.getSprite().setViewport(new Rectangle2D(var1, 0, 1429-var1, 400));
+            right.getSprite().setViewport(new Rectangle2D(0, 0, var1, 400));
+            //right.getSprite().setX(800 - var1);
+            right.getSprite().setX(1429 - var1);
+        //}
     }
 }
