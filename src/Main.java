@@ -18,7 +18,7 @@ public class Main extends Application {
              primaryStage.setTitle("Runner");
              Group root = new Group();
              Pane pane = new Pane(root);
-             GameScene theScene = new GameScene(pane, 600, 400,true);
+             GameScene theScene = new GameScene(pane, 564, 400,true);
              primaryStage.setScene(theScene);
              primaryStage.show();
          }

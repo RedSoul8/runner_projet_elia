@@ -3,9 +3,9 @@ public class Camera{
     private double x;
     private double y;
     protected double ax;
+    protected double vx=0;
     private double k_m=4;
     private double f_m=3;
-    private double vx=0;
 
     public Camera(double x, double y){
         this.x=x;
@@ -39,16 +39,16 @@ public class Camera{
         return vx;
     }
 
-    public double getA() {
+    public void setAx(double ax) {
+        this.ax = ax;
+    }
+
+    public double getAx() {
         return ax;
     }
 
     public void update(double time, double xhero)  {
         if(time<1){
-            //System.out.println("ax "+ ax);
-            //System.out.println("vx "+ vx);
-            //System.out.println("x "+ x);
-            //System.out.println("time "+time);
             ax=k_m*(xhero-x)-f_m*vx;
             vx+=ax*time;
             x+=vx*time;
