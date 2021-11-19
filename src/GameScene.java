@@ -16,10 +16,7 @@ public class GameScene extends Scene {
     private Camera camera;
     private ArrayList<Foe> foes=new ArrayList<Foe>();
     private Foe foe;
-    private double index;
-    private double var=0;
     private double var1=0;
-    private double var2=0;
     private double v_0=200;
 
     public Camera GetCam(){
@@ -44,8 +41,8 @@ public class GameScene extends Scene {
             if (event.getCode().equals(KeyCode.SPACE)) {
                 System.out.println("yes");
                 hero.attitude = "jumping up";
-                System.out.println(hero.xperso);
-                hero.yperso = 210;
+                hero.index=0;
+                hero.yperso = 260;
             }
         });
         this.setOnKeyReleased((event) -> {
@@ -68,7 +65,6 @@ public class GameScene extends Scene {
         public void handle(long now) {
             double time=(now-lastUpdate)*Math.pow(10,-9);
             if(time > 0.11){
-                //System.out.println("time avant "+time);
                 hero.update(time,v_0,camera);
                 GetCam().update(time, hero.xperso);
                 update(time);
@@ -86,7 +82,7 @@ public class GameScene extends Scene {
     }
 
     public void hero(){
-        hero = new Hero(200, 210, 0, 0,85,100,"heros.png","running");
+        hero = new Hero(200, 260, 0, 0,48,48,"little_hero.png","running");
     }
     public void health(){
         heart = new Health(2, 5,0,0,87,27,"heart.png","3vies");
@@ -109,11 +105,13 @@ public class GameScene extends Scene {
         left.getSprite().setViewport(new Rectangle2D(var1, 0, 564-var1, 400));
         right.getSprite().setViewport(new Rectangle2D(0, 0, var1, 400));
         right.getSprite().setX(564 - var1);
-        //System.out.println("hero " +hero.getHitbox());
-        //System.out.println("foe "+foe.getHitbox());
-        if(hero.getHitbox().intersects(new Rectangle2D(600,290,45,70))){ //foe.getHitbox()
-            heart.nboflife-=1;
+        System.out.println(hero.attitude);
+        System.out.println(hero.index);
+        if(!hero.IsInvisible()&&hero.getHitbox().intersects(foe.getHitbox())){
             System.out.println("tape !");
+            heart.nboflife-=1;
+            //hero.attitude="hurt";
+            hero.setInvisibility(2.5);
         }
     }
 }

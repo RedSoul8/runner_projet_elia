@@ -24,8 +24,8 @@ public class AnimatedThing {
         this.index = index;
     }
 
-    protected double index=0; // correspond à la position x (prise de l'image)
-    protected double max_index=425;
+    protected double index=0; // correspond à la position x (prise de l'image) qui va varier
+
 
     public double getXperso() {
         return xperso;
@@ -45,12 +45,8 @@ public class AnimatedThing {
 
     protected double xperso;
     protected double yperso;
-    private long time; // between 2 frames
-    private double size;
-    private double offset; // between 2 frames
 
     public AnimatedThing(double xperso, double yperso, double index,double y, double w, double h, String filename, String attitude){
-        this.index = index;
         this.xperso=xperso;
         this.yperso=yperso;
         this.w=w;
