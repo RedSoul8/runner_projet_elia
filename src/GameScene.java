@@ -1,4 +1,5 @@
 import com.sun.javafx.collections.SetAdapterChange;
+import com.sun.prism.MaskTextureGraphics;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
@@ -18,6 +19,7 @@ public class GameScene extends Scene {
     private Foe foe;
     private double var1=0;
     private double v_0=200;
+    int i=0;
 
     public Camera GetCam(){
         return this.camera;
@@ -25,10 +27,10 @@ public class GameScene extends Scene {
     public GameScene(Pane pane, double v, double v1,boolean b) {
         super(pane, v, v1, b);
         this.background();
+        this.foe();
         this.hero();
         this.health();
-        this.foe();
-        timer.start();
+        //timer.start();
         this.display(pane);
         camera = new Camera(0, 0);
         this.setOnKeyPressed((event) -> {
@@ -51,6 +53,24 @@ public class GameScene extends Scene {
                 System.out.println("non ");
             }
         });
+        AnimationTimer timer = new AnimationTimer() {
+            private long lastUpdate=0;
+            @Override
+            public void handle(long now) {
+                double time=(now-lastUpdate)*Math.pow(10,-9);
+                if(time > 0.11){
+                    hero.update(time,v_0,camera);
+                    GetCam().update(time, hero.xperso);
+                    update(time, pane);
+                    //for (Foe foe : foes){ //boucle for améliorée pour parcourir le tab de foes
+                        foe.update(time,camera.getV(),now);
+                    //}
+                    heart.update(time);
+                    lastUpdate=now;
+                }
+            }
+        };
+        timer.start();
     }
 
     private staticThing left;
@@ -59,7 +79,7 @@ public class GameScene extends Scene {
     private Health heart;
 
 
-    AnimationTimer timer = new AnimationTimer() {
+    /*AnimationTimer timer = new AnimationTimer() {
         private long lastUpdate=0;
         @Override
         public void handle(long now) {
@@ -67,12 +87,15 @@ public class GameScene extends Scene {
             if(time > 0.11){
                 hero.update(time,v_0,camera);
                 GetCam().update(time, hero.xperso);
-                update(time);
-                foe.update(time,camera.getV());
+                update(time, pane);
+                for (Foe foe : foes){ //boucle for améliorée pour parcourir le tab de foes
+                    foe.update(time,camera.getV());
+                }
+                heart.update(time);
                 lastUpdate=now;
             }
         }
-    };
+    };*/
 
     public void background() {
         left = new staticThing(0, 0, 500+var1, 0, 300-var1, 400, "forest.jpg");
@@ -89,29 +112,43 @@ public class GameScene extends Scene {
     //écart de 29 pixels pour passer au coeur suivant
     }
     public void foe(){
-        foe= new Foe(600,240,8,0,45,70,"foe.png","alive");
+        foe= new Foe(700,230,0,0,80,102,"ghost.png","alive");
     }
 
     public void display(Pane pane){
         pane.getChildren().add(left.getSprite());
         pane.getChildren().add(right.getSprite());
-        pane.getChildren().add(hero.getSprite());
         pane.getChildren().add(heart.getSprite());
         pane.getChildren().add(foe.getSprite());
+        pane.getChildren().add(hero.getSprite());
     }
 
-    public void update(double time) {
+    public void update(double time, Pane pane) {
         var1=(var1 + camera.getV()*time)%564;
         left.getSprite().setViewport(new Rectangle2D(var1, 0, 564-var1, 400));
         right.getSprite().setViewport(new Rectangle2D(0, 0, var1, 400));
         right.getSprite().setX(564 - var1);
-        System.out.println(hero.attitude);
-        System.out.println(hero.index);
-        if(!hero.IsInvisible()&&hero.getHitbox().intersects(foe.getHitbox())){
-            System.out.println("tape !");
-            heart.nboflife-=1;
-            //hero.attitude="hurt";
-            hero.setInvisibility(2.5);
-        }
+        //for (Foe foe : foes){
+            if(!hero.IsInvisible()&&hero.getHitbox().intersects(foe.getHitbox())){
+                System.out.println("tape !");
+                heart.nboflife-=1;
+                hero.attitude="hurt";
+                hero.setInvisibility(1.5);
+                if(heart.nboflife==0) hero.attitude="death";
+            }
+        //}
+        /*System.out.println(Math.random()*10);
+        System.out.println(i);
+        if (i> Math.random()*10){
+            System.out.println("if");
+            Foe foe=new Foe(hero.xperso+1000+Math.random()*10,230,0,0,80,102,"ghost.png","alive");
+            foes.add(foe);
+            pane.getChildren().add(foe.getSprite());
+            System.out.println(foe.xperso + "où est le méchant ?");
+            i=0;
+        }else{
+            i++;
+        }*/
+
     }
 }

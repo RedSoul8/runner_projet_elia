@@ -8,13 +8,12 @@ public class Health extends AnimatedThing {
 
     public void update(double time) {
         if ( nboflife == 2) {
-            this.index = this.index + 29;
+            sprite.setViewport(new Rectangle2D(29, 0, 87, 27));
         } else if (nboflife == 1) {
-            this.index = this.index + 29;
-        } else if (attitude == "dead"){
-            this.index = this.index + 29;
+            sprite.setViewport(new Rectangle2D(58, 0, 87, 27));
+        } else if (nboflife == 0){
+            sprite.setViewport(new Rectangle2D(87, 0, 87, 27));
         }
-        sprite.setViewport(new Rectangle2D(index, 0, 45, 70));
         sprite.setX(500);
         this.getSprite().setX(xperso);
     }

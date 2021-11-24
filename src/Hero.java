@@ -5,7 +5,6 @@ import java.util.Objects;
 public class Hero extends AnimatedThing {
     private double offset = 48;
     private double invisibility = 0;
-    protected double max_index=240;
 
     public Hero(double xhero, double yhero, double index, double y, double w, double h, String filename, String attitude) {
         super(xhero, yhero, index, y, w, h, filename, attitude);
@@ -17,18 +16,18 @@ public class Hero extends AnimatedThing {
         double g = 10;
 
         if (Objects.equals(this.attitude, "running")) {
-            if (this.index < max_index) { //annimation de course
-                this.index = this.index + offset;
+            if (this.index < 5*offset) { //annimation de course
+                this.index += offset;
             } else {
                 this.index = 0;
             }
             xperso += 20; //mon hero avance
             sprite.setViewport(new Rectangle2D(index, 0, offset, 48));
             sprite.setX(xperso - camera.getX() + 20);
-            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 20, yperso, offset, 48));
+            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 21, yperso+1, offset-6, 46));
         }
         if (Objects.equals(this.attitude, "jumping up")) {
-            if (index<144) { // annimation élan avant le saut
+            if (index<3*offset) { // annimation élan avant le saut
                 index += offset;
                 xperso += 20;
             }
@@ -45,6 +44,7 @@ public class Hero extends AnimatedThing {
                         vy += ay * time;
                         yperso -= vy * time;
                         xperso += 25;
+                        System.out.println(vy+" , "+yperso);
                     }
                 } else { //annimation avant la redescente
                     index+=offset;
@@ -55,8 +55,7 @@ public class Hero extends AnimatedThing {
             sprite.setViewport(new Rectangle2D(index, 48, offset, 48));
             sprite.setX(xperso - camera.getX()+20);
             sprite.setY(yperso);
-            this.setHitbox(new Rectangle2D(xperso - camera.getX()+20, yperso, offset, 48));
-        }
+            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 21, yperso+1, offset-6, 46));        }
         if (Objects.equals(this.attitude, "jumping down")) {
             if (this.yperso < 259) { //phase descendante du saut
                 index = 240;
@@ -71,7 +70,7 @@ public class Hero extends AnimatedThing {
                     yperso += vy * time;
                 }
             } else {
-                if(index<288){ //annimation atterrissage
+                if(index<6*offset){ //annimation atterrissage
                     System.out.println("touche le sol..");
                     yperso = 260;
                     index += offset;
@@ -85,14 +84,36 @@ public class Hero extends AnimatedThing {
             xperso += 25;
             sprite.setX(xperso - camera.getX()+20);
             sprite.setY(yperso);
-            this.setHitbox(new Rectangle2D(xperso - camera.getX()+20, yperso, offset, 48));
+            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 21, yperso+1, offset-6, 46));        }
+        if (Objects.equals(this.attitude, "hurt")){
+            if (invisibility>0){
+                invisibility -= time;
+                if(index<3*offset){
+                    index+=offset;
+                }else{
+                    index=0;
+                }
+            }
+            else{
+                attitude="running";
+                invisibility=0;
+            }
+            xperso += 13; //mon hero avance
+            sprite.setViewport(new Rectangle2D(index, 96, offset, 48));
+            sprite.setX(xperso - camera.getX() + 20);
+            yperso=260;
+            sprite.setY(yperso);
+            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 21, yperso+1, offset-6, 46));
         }
-        if (invisibility > 0) {
-            invisibility -= time;
+        if (Objects.equals(this.attitude, "death")){
+            if(index<8*offset) {
+                index += offset;
+            }
+            xperso += 20; //mon hero avance
+            sprite.setViewport(new Rectangle2D(index, 144, offset, 48));
+            sprite.setX(xperso - camera.getX() + 20);
+            sprite.setY(260);
         }
-        //if (invisibility<0){
-            //attitude="running";
-        //}
     }
 
     public Boolean IsInvisible() {
