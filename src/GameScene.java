@@ -15,11 +15,10 @@ import java.util.ArrayList;
 public class GameScene extends Scene {
     private Hero hero;
     private Camera camera;
-    private ArrayList<Foe> foes=new ArrayList<Foe>();
-    private Foe foe;
-    private double var1=0;
+    private Ghost ghost;
+    private Bat bat;
+    protected double var1=0;
     private double v_0=200;
-    int i=0;
 
     public Camera GetCam(){
         return this.camera;
@@ -30,15 +29,12 @@ public class GameScene extends Scene {
         this.foe();
         this.hero();
         this.health();
-        //timer.start();
         this.display(pane);
         camera = new Camera(0, 0);
         this.setOnKeyPressed((event) -> {
             if (event.getCode().equals(KeyCode.D)) {
                 hero.xperso+=5;
                 hero.setAccelerate(true);
-                // utiliser Accelerate(True) qd pressed et (False) qd released
-                // idée : faire accelerate =true / false pour mettre une condition if avec jumping & D.
             }
             if (event.getCode().equals(KeyCode.SPACE)) {
                 System.out.println("yes");
@@ -50,7 +46,7 @@ public class GameScene extends Scene {
         this.setOnKeyReleased((event) -> {
             if (event.getCode().equals(KeyCode.D)) {
                 hero.setAccelerate(false);
-                System.out.println("non ");
+                System.out.println("non");
             }
         });
         AnimationTimer timer = new AnimationTimer() {
@@ -61,12 +57,16 @@ public class GameScene extends Scene {
                 if(time > 0.11){
                     hero.update(time,v_0,camera);
                     GetCam().update(time, hero.xperso);
-                    update(time, pane);
-                    //for (Foe foe : foes){ //boucle for améliorée pour parcourir le tab de foes
-                        foe.update(time,camera.getV(),now);
-                    //}
+                    update(time);
+                    ghost.update(time,camera.getV());
+                    bat.update(time,camera.getV());
                     heart.update(time);
                     lastUpdate=now;
+                    System.out.println(hero.attitude);
+                    if(hero.attitude=="end"){
+                        stop();
+                        gameover(pane);
+                    }
                 }
             }
         };
@@ -75,80 +75,46 @@ public class GameScene extends Scene {
 
     private staticThing left;
     private staticThing right;
-
+    private staticThing gameover;
     private Health heart;
 
-
-    /*AnimationTimer timer = new AnimationTimer() {
-        private long lastUpdate=0;
-        @Override
-        public void handle(long now) {
-            double time=(now-lastUpdate)*Math.pow(10,-9);
-            if(time > 0.11){
-                hero.update(time,v_0,camera);
-                GetCam().update(time, hero.xperso);
-                update(time, pane);
-                for (Foe foe : foes){ //boucle for améliorée pour parcourir le tab de foes
-                    foe.update(time,camera.getV());
-                }
-                heart.update(time);
-                lastUpdate=now;
-            }
-        }
-    };*/
-
     public void background() {
-        left = new staticThing(0, 0, 500+var1, 0, 300-var1, 400, "forest.jpg");
-        right = new staticThing(300-var1, 0, 0, 0, 300+var1, 400, "forest.jpg");
-        // augmenter w de right et x de left ET diminuer posx de right
-        // augmenter x de right (avec var2) ET mettre posx de left à 600 et x de left à [ ] (avec var)
+        left = new staticThing(0, 0, 500, 0, 300, 400, "forest.jpg");
+        right = new staticThing(300, 0, 0, 0, 300, 400, "forest.jpg");
     }
-
     public void hero(){
-        hero = new Hero(200, 260, 0, 0,48,48,"little_hero.png","running");
+        hero = new Hero(200, 260, 0, 0,48,48,"little_heros.png","running");
     }
     public void health(){
         heart = new Health(2, 5,0,0,87,27,"heart.png","3vies");
-    //écart de 29 pixels pour passer au coeur suivant
     }
     public void foe(){
-        foe= new Foe(700,230,0,0,80,102,"ghost.png","alive");
+        ghost = new Ghost(1000,230,0,0,80,102,"ghost.png","alive");
+        bat = new Bat(800, 150,0,6,130,62,"flying_bat.png","alive");
     }
-
+    public void gameover(Pane pane){
+        gameover = new staticThing(0, 0, 0, 0, 564,400, "gameover.png");
+        pane.getChildren().add(gameover.getSprite());
+    }
     public void display(Pane pane){
         pane.getChildren().add(left.getSprite());
         pane.getChildren().add(right.getSprite());
         pane.getChildren().add(heart.getSprite());
-        pane.getChildren().add(foe.getSprite());
+        pane.getChildren().add(ghost.getSprite());
+        pane.getChildren().add(bat.getSprite());
         pane.getChildren().add(hero.getSprite());
     }
-
-    public void update(double time, Pane pane) {
+    public void update(double time) {
         var1=(var1 + camera.getV()*time)%564;
         left.getSprite().setViewport(new Rectangle2D(var1, 0, 564-var1, 400));
         right.getSprite().setViewport(new Rectangle2D(0, 0, var1, 400));
         right.getSprite().setX(564 - var1);
-        //for (Foe foe : foes){
-            if(!hero.IsInvisible()&&hero.getHitbox().intersects(foe.getHitbox())){
-                System.out.println("tape !");
-                heart.nboflife-=1;
-                hero.attitude="hurt";
-                hero.setInvisibility(1.5);
-                if(heart.nboflife==0) hero.attitude="death";
-            }
-        //}
-        /*System.out.println(Math.random()*10);
-        System.out.println(i);
-        if (i> Math.random()*10){
-            System.out.println("if");
-            Foe foe=new Foe(hero.xperso+1000+Math.random()*10,230,0,0,80,102,"ghost.png","alive");
-            foes.add(foe);
-            pane.getChildren().add(foe.getSprite());
-            System.out.println(foe.xperso + "où est le méchant ?");
-            i=0;
-        }else{
-            i++;
-        }*/
-
+        if(!hero.IsInvisible()&&hero.getHitbox().intersects(ghost.getHitbox())||!hero.IsInvisible()&&hero.getHitbox().intersects(bat.getHitbox())){
+            System.out.println("tape !");
+            heart.nboflife-=1;
+            hero.attitude="hurt";
+            hero.setInvisibility(1);
+            if(heart.nboflife==0) hero.attitude="death";
+        }
     }
 }

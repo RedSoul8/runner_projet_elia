@@ -24,7 +24,7 @@ public class Hero extends AnimatedThing {
             xperso += 20; //mon hero avance
             sprite.setViewport(new Rectangle2D(index, 0, offset, 48));
             sprite.setX(xperso - camera.getX() + 20);
-            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 21, yperso+1, offset-6, 46));
+            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 20, yperso, 37, 46));
         }
         if (Objects.equals(this.attitude, "jumping up")) {
             if (index<3*offset) { // annimation élan avant le saut
@@ -52,10 +52,10 @@ public class Hero extends AnimatedThing {
                     System.out.println("tombe !");
                 }
             }
-            sprite.setViewport(new Rectangle2D(index, 48, offset, 48));
+            sprite.setViewport(new Rectangle2D(index, 49, offset, 48));
             sprite.setX(xperso - camera.getX()+20);
             sprite.setY(yperso);
-            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 21, yperso+1, offset-6, 46));        }
+            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 20, yperso, 37, 46));        }
         if (Objects.equals(this.attitude, "jumping down")) {
             if (this.yperso < 259) { //phase descendante du saut
                 index = 240;
@@ -84,7 +84,7 @@ public class Hero extends AnimatedThing {
             xperso += 25;
             sprite.setX(xperso - camera.getX()+20);
             sprite.setY(yperso);
-            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 21, yperso+1, offset-6, 46));        }
+            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 20, yperso, 37, 46));        }
         if (Objects.equals(this.attitude, "hurt")){
             if (invisibility>0){
                 invisibility -= time;
@@ -99,15 +99,18 @@ public class Hero extends AnimatedThing {
                 invisibility=0;
             }
             xperso += 13; //mon hero avance
-            sprite.setViewport(new Rectangle2D(index, 96, offset, 48));
+            sprite.setViewport(new Rectangle2D(index, 97, offset, 48));
             sprite.setX(xperso - camera.getX() + 20);
             yperso=260;
             sprite.setY(yperso);
-            this.setHitbox(new Rectangle2D(xperso - camera.getX() + 21, yperso+1, offset-6, 46));
+            this.setHitbox(new Rectangle2D(xperso - camera.getX()+20 , yperso, 37, 46));
         }
         if (Objects.equals(this.attitude, "death")){
             if(index<8*offset) {
                 index += offset;
+            }
+            else{
+                attitude="end";
             }
             xperso += 20; //mon hero avance
             sprite.setViewport(new Rectangle2D(index, 144, offset, 48));
